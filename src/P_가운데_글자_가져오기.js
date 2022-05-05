@@ -9,9 +9,15 @@
 // "qwer"	"we"
 
 function solution(s) {
-  let answer = "";
-  return answer;
+  const isEven = s.length % 2;
+  const MilldeNum = parseInt(s.length / 2);
+  if (isEven === 0) return s.slice(MilldeNum - 1, MilldeNum + 1);
+  else return s.slice(MilldeNum, MilldeNum + 1);
 }
 
 const ex1 = "abcde";
+
 const ex2 = "qwer";
+
+console.log(solution(ex1));
+console.log(solution(ex2));
