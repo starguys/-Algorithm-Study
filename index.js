@@ -74,7 +74,7 @@ function isPath(arr) {
       let a = p[0] + dir[i][0];
       let b = p[1] + dir[i][1];
       if (a >= 0 && b >= 0 && a < row && b < col && arr[a][b] != -1) {
-        if (a == row - 1 && b == col - 1) return true;
+        if (a == row - 1 && b == col - 1) return !true;
         q.push([a, b]);
       }
     }
