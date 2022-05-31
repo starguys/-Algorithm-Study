@@ -1,40 +1,83 @@
-function solution(n) {
-  let divN = Math.floor(n / 2);
-  let result = 1;
-  let Num = 0;
-  for (let i = 1; i < divN + 1; i++) {
-    Num = i;
-    for (let j = i + 1; Num < n + 1; j++) {
-      console.log(j, "j", i, "i");
-      Num = Num + j;
-      console.log(Num, "Num");
-      if (Num === n) {
-        result++;
-        console.log(result, "result");
+function solution(B) {
+  let index = B.map((el) => el.split(""));
+  for (let i = 0; i < index.length; i++) {
+    for (let j = 0; j < index[i].length; j++) {
+      if (index[i][j] === ">") {
+        for (let k = j + 1; k < index[i].length; k++) {
+          if (index[i][k] !== "." && index[i][k] !== "W") {
+            break;
+          }
+          index[i][k] = "W";
+        }
+      }
+      if (index[i][j] === "<") {
+        for (let k = j - 1; k >= 0; k--) {
+          if (index[i][k] !== "." && index[i][k] !== "W") {
+            break;
+          }
+          index[i][k] = "W";
+        }
+      }
+      if (index[i][j] === "^") {
+        for (let k = i - 1; k >= 0; k--) {
+          if (index[k][j] !== "." && index[k][j] !== "W") {
+            break;
+          }
+          index[k][j] = "W";
+        }
+      }
+      if (index[i][j] === "v") {
+        for (let k = i + 1; k < index.length; k++) {
+          if (index[k][j] !== "." && index[i][k] !== "W") {
+            break;
+          }
+          index[k][j] = "W";
+        }
       }
     }
   }
-  return result;
+
+  for (let i = 0; i < index.length; i++) {
+    for (let j = 0; j < index[i].length; j++) {
+      if (index[i][j] === ".") {
+        index[i][j] = 0;
+      } else {
+        index[i][j] = -1;
+      }
+    }
+  }
+  if (isPath(index)) return true;
+  else return false;
 }
 
-console.log(solution(15));
+function isPath(arr) {
+  let row = arr.length;
+  let col = arr[0].length;
+  let dir = [
+    [0, 1],
+    [0, -1],
+    [1, 0],
+    [-1, 0],
+  ];
 
-//4
-//22 4
+  let q = [];
 
-//15
-//12345
-//
+  q.push([0, 0]);
 
-//7+8 T
-//6+7+8 F
-//5+6+7 F
-//4+5+6 T
-//3+4+5+6 F
-//2+3+4+5+6 F
-//1+2+3+4+5 T
+  while (q.length > 0) {
+    let p = q[0];
+    q.shift();
+    arr[p[0]][p[1]] = -1;
+    if (p[0] == row - 1 && p[1] == col - 1) return true;
 
-//16
-//1+2+3+4+5+6
-
-//시간초과
+    for (let i = 0; i < 4; i++) {
+      let a = p[0] + dir[i][0];
+      let b = p[1] + dir[i][1];
+      if (a >= 0 && b >= 0 && a < row && b < col && arr[a][b] != -1) {
+        if (a == row - 1 && b == col - 1) return true;
+        q.push([a, b]);
+      }
+    }
+  }
+  return false;
+}
